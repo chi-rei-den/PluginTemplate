@@ -1,0 +1,36 @@
+name: GitHub CI
+on: push
+
+jobs:
+  build:
+    name: Build
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        submodules: recursive
+
+    - name: Install NuGet
+      run: choco install nuget.commandline
+
+    - name: Restore NuGet packages
+      run: nuget restore PluginTemplate.sln
+
+    - name: Build
+      shell: pwsh
+      run: |
+        $msbuildPath = Split-Path (& "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -requires Microsoft.Component.MSBuild -find MSBuild\Current\Bin\amd64\MSBuild.exe | Select-Object -First 1) -Parent
+        $env:PATH = $msbuildPath + ';' + $env:PATH
+        MSBuild PluginTemplate.sln /p:Configuration=Debug
+        MSBuild PluginTemplate.sln /p:Configuration=Release
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ArtifactDebug
+        path: src/bin/Debug/net452
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ArtifactRelease
+        path: src/bin/Release/net452
