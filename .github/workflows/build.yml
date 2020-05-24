@@ -11,8 +11,8 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Install NuGet
-      run: choco install nuget.commandline
+    - name: Installer NuGet client
+      uses: nuget/setup-nuget@v1
 
     - name: Restore NuGet packages
       run: nuget restore PluginTemplate.sln
