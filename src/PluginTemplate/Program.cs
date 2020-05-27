@@ -18,7 +18,7 @@ namespace Plugin
 
         public override Version Version => Assembly.GetExecutingAssembly().GetName().Version;
 
-        protected Plugin(Main game) : base(game)
+        public Plugin(Main game) : base(game)
         {
         }
 
