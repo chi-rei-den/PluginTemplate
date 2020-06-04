@@ -22,8 +22,8 @@ jobs:
       run: |
         $msbuildPath = Split-Path (& "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -requires Microsoft.Component.MSBuild -find MSBuild\Current\Bin\amd64\MSBuild.exe | Select-Object -First 1) -Parent
         $env:PATH = $msbuildPath + ';' + $env:PATH
-        MSBuild PluginTemplate.sln /p:Configuration=Debug
-        MSBuild PluginTemplate.sln /p:Configuration=Release
+        MSBuild /p:Configuration=Debug
+        MSBuild /p:Configuration=Release
 
     - uses: actions/upload-artifact@v1
       with:
