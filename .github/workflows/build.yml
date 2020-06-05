@@ -15,7 +15,7 @@ jobs:
       uses: nuget/setup-nuget@v1
 
     - name: Restore NuGet packages
-      run: nuget restore PluginTemplate.sln
+      run: nuget restore
 
     - name: Build
       shell: pwsh
