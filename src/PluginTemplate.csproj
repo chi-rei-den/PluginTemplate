@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TerrariaServer.TShock.Nightly" Version="2020.10.4892">
+    <PackageReference Include="TerrariaServer.TShock.Nightly" Version="2021.8.5211">
       <IncludeAssets>compile</IncludeAssets>
     </PackageReference>
   </ItemGroup>
