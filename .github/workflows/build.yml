@@ -7,30 +7,25 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v1
-      with:
-        submodules: recursive
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          submodules: 'recursive'
 
-    - name: Installer NuGet client
-      uses: nuget/setup-nuget@v1
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.0.100'
 
-    - name: Restore NuGet packages
-      run: nuget restore
+      - name: Build
+        run: |
+          cd src
+          dotnet build
 
-    - name: Build
-      shell: pwsh
-      run: |
-        $msbuildPath = Split-Path (& "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -requires Microsoft.Component.MSBuild -find MSBuild\Current\Bin\amd64\MSBuild.exe | Select-Object -First 1) -Parent
-        $env:PATH = $msbuildPath + ';' + $env:PATH
-        MSBuild /p:Configuration=Debug
-        MSBuild /p:Configuration=Release
-
-    - uses: actions/upload-artifact@v1
-      with:
-        name: ArtifactDebug
-        path: src/bin/Debug/net452
-
-    - uses: actions/upload-artifact@v1
-      with:
-        name: ArtifactRelease
-        path: src/bin/Release/net452
+      - name: CI Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Plugin
+          path: |
+            ./src/bin/Debug/net6.0/
